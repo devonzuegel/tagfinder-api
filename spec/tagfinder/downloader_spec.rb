@@ -1,23 +1,22 @@
 RSpec.describe Tagfinder::Downloader do
-  let(:path_to_file) { File.join(%w[. path to file.rb]) }
-  let(:url)          { '' }
-  let(:preparer)     { instance_double(described_class::Preparer) }
-  let(:cli)          { instance_double(Tagfinder::CommandLine) }
+  let(:url)             { 'http://example.com/blah.mzxml' }
+  let(:local_path)      { Pathname.new('subdir').join('blah.mzxml') }
+  let(:body)            { 'this is the body of the file' }
+  let(:fake_connection) { class_double(described_class::Connection, call: body) }
+
+  before { stub_const("#{described_class}::Connection", fake_connection) }
 
   describe '.call' do
-    it 'runs the execution' do
-      ap downloader
-      ap preparer
-      ap command_line
-    end
-
-    it 'requires the url to be valid' do
-      expect { described_class.call('sdf asdf') }.to raise_error URI::InvalidURIError
+    it 'retrieves the body of the file and saves it to the local path' do
+      described_class.call(url, local_path)
+      expect(fake_connection)
+        .to have_received(:call)
+        .with(Tagfinder::Downloader::Request.new(url))
     end
   end
 end
 
-RSpec.describe Tagfinder::Downloader::TmpFileCreator, :focus do
+RSpec.describe Tagfinder::Downloader::TmpFileCreator do
   let(:basename) { 'test.txt' }
   let(:dir_path) { Pathname.new('extra-dir') }
   let(:filepath) { dir_path.join(basename) }
@@ -52,6 +51,11 @@ RSpec.describe Tagfinder::Downloader::TmpFileCreator, :focus do
       expect(File)
         .to have_received(:write)
         .with(described_class::TMP_DIR.join(filepath), content)
+    end
+
+    it 'returns the path to the downloaded file' do
+      expect(described_class.call(filepath, content))
+        .to eql described_class::TMP_DIR.join(filepath)
     end
   end
 end

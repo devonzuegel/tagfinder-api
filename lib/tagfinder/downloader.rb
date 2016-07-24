@@ -2,14 +2,9 @@ module Tagfinder
   class Downloader
     include Procto.call, Concord.new(:url, :local_path)
 
-    private_class_method :new
-
-    def initialize(url)
-      super(validated_url(url))
-    end
-
     def call
-      Connection.call(Request.new())
+      file_body = Connection.call(Request.new(url))
+      TmpFileCreator.call(local_path, file_body)
     end
 
     class TmpFileCreator
@@ -18,8 +13,9 @@ module Tagfinder
       include Procto.call, Concord.new(:path, :content)
 
       def call
-        build_path
+        construct_path
         File.write(full_path, content)
+        full_path
       end
 
       private
@@ -28,7 +24,7 @@ module Tagfinder
         Pathname.new(TMP_DIR).join(path)
       end
 
-      def build_path
+      def construct_path
         dir_path = File.dirname(full_path)
         FileUtils.mkdir_p(dir_path) unless File.exist?(dir_path)
       end
