@@ -1,5 +1,5 @@
 GIT
-  remote: https://github.com/mbj/mutant.git
+  remote: git://github.com/mbj/mutant.git
   revision: cfc09e921c4ecf6ea903effb4ddd581d4ad8ea22
   specs:
     mutant (0.8.11)
@@ -173,18 +173,19 @@ PLATFORMS
 
 DEPENDENCIES
   abstract_method (= 1.2.1)
+  adamantium (= 0.2.0)
   awesome_print (= 1.6.1)
   colorize (= 0.7.7)
   concord (= 0.1.5)
   guard (= 2.13.0)
   guard-rspec (= 4.6.4)
   mutant-rspec!
-  procto
+  procto (= 0.0.3)
   reek (~> 4.1)
-  rspec (= 3.5.0)
+  rspec (~> 3.5)
   rubocop (~> 0.41)
-  sinatra
-  sinatra-reloader
+  sinatra (= 1.4.7)
+  sinatra-reloader (= 1.0)
 
 BUNDLED WITH
    1.12.5
