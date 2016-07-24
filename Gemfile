@@ -1,0 +1,15 @@
+source 'https://rubygems.org'
+
+gem 'abstract_method',  '1.2.1'
+gem 'rspec',            '3.5.0',  :require => 'spec'
+gem 'colorize',         '0.7.7'
+gem 'awesome_print',    '1.6.1'
+gem 'concord',          '0.1.5'
+gem 'guard',            '2.13.0'
+gem 'guard-rspec',      '4.6.4',  :require => false
+gem 'rubocop',          '~> 0.41'
+gem 'reek',             '~> 4.1'
+gem 'mutant-rspec', git: 'https://github.com/mbj/mutant.git'
+gem 'procto'
+gem 'sinatra'
+gem 'sinatra-reloader'
