@@ -8,8 +8,8 @@ require 'colorize'
 require 'anima'
 require 'open3'
 
-require './lib/shell'
-require './lib/execution'
+require './lib/tagfinder/shell'
+require './lib/tagfinder/execution'
 
 module Tagfinder
   class App < Sinatra::Base

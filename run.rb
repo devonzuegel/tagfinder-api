@@ -1,4 +1,4 @@
-require './lib/app'
+require './lib/tagfinder/app'
 
 if ENV['SINATRA_ENV'] == 'production'
   set :port, 80

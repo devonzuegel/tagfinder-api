@@ -2,7 +2,7 @@ require 'bundler/setup'
 require 'rspec'
 require 'awesome_print'
 require 'colorize'
-require './lib/app'
+require './lib/tagfinder/app'
 
 RSpec.configure do |config|
   config.filter_run_excluding skip: true
