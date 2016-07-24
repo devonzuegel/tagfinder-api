@@ -1,43 +1,47 @@
+require 'concord'
+require 'anima'
+
 module Tagfinder
   class Shell
-    include Anima.new(:logger, :commands, :stdouts, :stderrs)
+    include Anima.new(:adapter, :history)
 
-    attr_reader :commands, :stdouts, :stderrs
-
-    def initialize(logger: false)
-      super(logger: logger, commands: [], stdouts: [], stderrs: [])
+    def self.create(adapter)
+      new(adapter: adapter, history: History.new([]))
     end
 
-    def run(cmd)
-      @commands += [cmd] if valid_command?(cmd)
+    def run(command)
+      output = Output.coerce(*adapter.execute(command.to_s))
 
-      _, stdout, stderr = Open3.popen3(cmd)
-
-      add_output(stdout.each_line.map { |x| x }.join)
-      add_error(stderr.each_line.map { |x| x }.join)
-
-      !errored?
+      with(history: history.add(command, output))
     end
 
-    def add_output(msg)
-      @stdouts += [msg]
-      print msg.light_green if logger
+    class Output
+      include Anima.new(:stdout, :stderr, :status)
+
+      def self.coerce(_, stdout, stderr, process)
+        new(
+          stdout: stdout.read,
+          stderr: stderr.read,
+          status: process.value
+        )
+      end
     end
 
-    def add_error(msg)
-      @stderrs += [msg]
-      print msg.yellow if logger
-    end
+    class History
+      include Concord.new(:executions)
 
-    private
+      def add(command, output)
+        self.class.new(executions + [Execution.new(command, output)])
+      end
 
-    def errored?
-      stderrs.join.downcase.include?('error')
-    end
+      def to_a
+        executions
+      end
 
-    def valid_command?(cmd)
-      return true if cmd.end_with?(';')
-      fail ArgumentError, 'Please end all commands with a semi-colon'
+      class Execution
+        include Concord::Public.new(:command, :output)
+      end
+      private_constant(:Execution)
     end
   end
 end

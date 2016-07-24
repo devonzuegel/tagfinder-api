@@ -7,9 +7,14 @@ require 'json'
 require 'colorize'
 require 'anima'
 require 'open3'
+require 'forwardable'
 
 require './lib/tagfinder/shell'
 require './lib/tagfinder/execution'
+require './lib/tagfinder/shell'
+require './lib/tagfinder/shell/adapter'
+require './lib/tagfinder/shell/command'
+require './lib/tagfinder/command_line'
 
 module Tagfinder
   class App < Sinatra::Base
