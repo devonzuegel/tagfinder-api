@@ -14,6 +14,7 @@ require './lib/tagfinder/execution'
 require './lib/tagfinder/shell'
 require './lib/tagfinder/shell/adapter'
 require './lib/tagfinder/shell/command'
+require './lib/tagfinder/shell/command/echo'
 require './lib/tagfinder/command_line'
 
 module Tagfinder
