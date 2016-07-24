@@ -2,7 +2,9 @@ module Tagfinder
   class Execution
     include Procto.call
 
-    TMP_DIR = File.join(%w[. tmp])
+    TMP_DIR           = File.join(%w[. tmp])
+    UBUNTU_EXECUTABLE = File.join(%w[. bin tagfinder])
+    MAC_EXECUTABLE    = File.join(%w[. bin tagfinder-mac])
 
     include Concord.new(:data_file_url, :config_file_url, :dir)
 
@@ -12,29 +14,26 @@ module Tagfinder
 
     def call
       prepare_inputs
+      run_tagfinder
       cleanup
       {
-        outputs: shell.stdouts,
-        errors:  shell.stderrs,
-        dir:     dir
+        commands: shell.commands,
+        outputs:  shell.stdouts,
+        errors:   shell.stderrs,
+        dir:      dir
       }
-      # sleep 3
     end
 
     private
 
-    def cleanup
-      shell.run("rm -rf #{dir};")
-    end
-
     def prepare_inputs
-      shell.run("wget -O #{local_data_filepath} #{data_file_url};")
-      return if config_file_url.nil?
-      shell.run("wget -O #{local_config_filepath} #{config_file_url};")
-    end
+      download(data_file_url, local_data_filepath)
 
-    def shell
-      @shell ||= Tagfinder::Shell.new(logger: true)
+      if used_default_config?
+        shell.add_output('No config file specified. Continuing...')
+      else
+        download(config_file_url, local_config_filepath)
+      end
     end
 
     def local_config_filepath
@@ -62,6 +61,39 @@ module Tagfinder
         Dir.mkdir(dirname)
         return dirname
       end
+    end
+
+    def used_default_config?
+      config_file_url.nil?
+    end
+
+    def download(file_url, local_filepath)
+      shell.add_output("Downloading '#{file_url}' to '#{local_filepath}'...")
+      shell.run("wget -O #{local_filepath} #{file_url};")
+    end
+
+    def run_tagfinder
+      shell.run(command)
+    end
+
+    def command
+      if used_default_config?
+        "#{executable} #{local_data_filepath};"
+      else
+        "#{executable} #{local_data_filepath} #{local_config_filepath};"
+      end
+    end
+
+    def executable
+      Sinatra::Base.production? ? UBUNTU_EXECUTABLE : MAC_EXECUTABLE
+    end
+
+    def cleanup
+      shell.run("rm -rf #{dir};")
+    end
+
+    def shell
+      @shell ||= Tagfinder::Shell.new(logger: true)
     end
   end
 end
