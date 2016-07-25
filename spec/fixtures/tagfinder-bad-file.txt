@@ -1,0 +1,5 @@
+IsoStamp version 2.0 alpha 1
+Copyright 2016, Stanford University, Bertozzi group.
+Contact: Christina Woo (cmwoo@stanford.edu)
+
+loading mzxml file [badfile.mzxml] ...

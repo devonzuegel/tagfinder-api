@@ -40,6 +40,15 @@ module Tagfinder
 
       class Execution
         include Concord::Public.new(:command, :output)
+
+        def to_s
+          {
+            command: command,
+            status:  output.status.exitstatus,
+            stdout:  output.stdout,
+            stderr:  output.stderr
+          }
+        end
       end
       private_constant(:Execution)
     end

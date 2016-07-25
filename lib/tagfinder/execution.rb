@@ -1,25 +1,46 @@
 module Tagfinder
   class Execution
-    include Procto.call, Anima.new(:data_url, :config_url, :downloader, :cli)
-
-    private_class_method :new
+    include Procto.call, Memoizable, Anima.new(:data_url, :params_url, :downloader, :cli)
 
     def call
-      downloader.call(data_url)
-      downloader.call(config_url) unless config_url.nil?
-      Cleanup.call()
+      history = cli
+        .tagfinder(data_filepath: data_filepath, params_filepath: params_filepath)
+        .history
+      cleanup
+      # TODO: upload results to S3
+      history.to_a.map(&:to_s)
     end
 
-    class Cleanup
-      include Procto.call(:clean)
+    private
+
+    def cleanup
+      ap files_to_remove
+      File.delete(*files_to_remove)
     end
 
-    class ListFiles
-      CMD = 'ls -1 %<dir>s'.freeze
+    def files_to_remove
+      [data_filepath, params_filepath].reject(&:nil?)
     end
 
-    class CLI < CommandLine
-      command :ls, ListFiles
+    def data_filepath
+      downloader.call(
+        url:          data_url,
+        filename:     File.basename(data_url),
+        file_creator: Downloader::MzxmlFileCreator,
+        connection:   Downloader::Connection
+      )
     end
+    memoize :data_filepath
+
+    def params_filepath
+      return if params_url.nil?
+      downloader.call(
+        url:          params_url,
+        filename:     File.basename(params_url),
+        file_creator: Downloader::ParamsFileCreator,
+        connection:   Downloader::Connection
+      )
+    end
+    memoize :params_filepath
   end
 end

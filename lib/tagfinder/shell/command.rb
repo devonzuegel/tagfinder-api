@@ -15,12 +15,12 @@ module Tagfinder
     end
 
     class TagfinderMac < Command
-      EXECUTABLE = Pathname.new('bin').join('tagfinder-mac')
+      EXECUTABLE = Pathname.new('.').join('bin', 'tagfinder-mac')
       CMD        = "#{EXECUTABLE} %<data_filepath>s %<params_filepath>s".freeze
     end
 
     class TagfinderUbuntu < Command
-      EXECUTABLE = Pathname.new('bin').join('tagfinder')
+      EXECUTABLE = Pathname.new('.').join('bin', 'tagfinder')
       CMD        = "#{EXECUTABLE} %<data_filepath>s %<params_filepath>s".freeze
     end
   end

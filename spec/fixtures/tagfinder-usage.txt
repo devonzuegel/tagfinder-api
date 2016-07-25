@@ -1,0 +1,17 @@
+usage:
+to search for tag patterns and filter out tandem LC-MS data not associated with tag patterns
+   bin/tagfinder-mac input_file.mzxml
+to do the same using non-default settings
+   bin/tagfinder-mac input_file.mzxml configuration_file
+to generate a configuration file at default settings
+   bin/tagfinder-mac -g config_file
+
+Note that output will go in to files with names based upon the 
+input mxzml files name, with the ".mzxml" removed and various
+postfixes added on for different types of output.
+input_file_summary.txt - summary of tag patterns found and a record of the settings the program was run at
+input_file_chart.txt - table of tag patterns found, sorted by score
+input_file_massspec.csv - intended for use as input to an LC-MS machine for 2nd stage experiments; generally a subset of the information in input_file_chart.txt
+input_file_filtered.mzxml - mzxml with non-matching MS2 data removed
+input_file_filter_log.txt - listing of why each MS2 scan was passed or rejected
+input_file_filter_log2.txt - briefer listing
