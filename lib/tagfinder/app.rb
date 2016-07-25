@@ -17,6 +17,9 @@ require './lib/tagfinder/shell/adapter'
 require './lib/tagfinder/shell/command'
 require './lib/tagfinder/shell/command/echo'
 require './lib/tagfinder/downloader'
+require './lib/tagfinder/downloader/connection'
+require './lib/tagfinder/downloader/request'
+require './lib/tagfinder/downloader/tmp_file_creator'
 
 module Tagfinder
   class App < Sinatra::Base
