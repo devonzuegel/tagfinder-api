@@ -7,9 +7,10 @@ gem 'awesome_print',    '1.6.1'
 
 gem 'concord',          '0.1.5'
 gem 'procto',           '0.0.3'
-gem 'abstract_method',  '1.2.1'
+gem 'abstract_class'
 gem 'adamantium',       '0.2.0'
 gem 'http',             '2.0.2'
+gem 'memoizable',       '0.4.2'
 
 group :test do
   gem 'rspec',          '~> 3.5'

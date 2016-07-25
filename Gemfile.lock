@@ -24,7 +24,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    abstract_method (1.2.1)
+    abstract_class (1.0.1)
     abstract_type (0.0.7)
     adamantium (0.2.0)
       ice_nine (~> 0.11.0)
@@ -187,7 +187,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  abstract_method (= 1.2.1)
+  abstract_class
   adamantium (= 0.2.0)
   awesome_print (= 1.6.1)
   colorize (= 0.7.7)
@@ -195,6 +195,7 @@ DEPENDENCIES
   guard (= 2.13.0)
   guard-rspec (= 4.6.4)
   http (= 2.0.2)
+  memoizable (= 0.4.2)
   mutant-rspec!
   procto (= 0.0.3)
   reek (~> 4.1)

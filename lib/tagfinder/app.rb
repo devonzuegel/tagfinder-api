@@ -8,6 +8,7 @@ require 'colorize'
 require 'anima'
 require 'open3'
 require 'forwardable'
+require 'abstract_class'
 require 'http'
 
 require './lib/tagfinder/shell'
@@ -19,7 +20,7 @@ require './lib/tagfinder/shell/command/echo'
 require './lib/tagfinder/downloader'
 require './lib/tagfinder/downloader/connection'
 require './lib/tagfinder/downloader/request'
-require './lib/tagfinder/downloader/tmp_file_creator'
+require './lib/tagfinder/downloader/file_creator'
 
 module Tagfinder
   class App < Sinatra::Base
