@@ -8,7 +8,7 @@ module Tagfinder
     end
 
     class TmpFileCreator
-      TMP_DIR = Pathname.new('tmp').expand_path
+      DIR = Pathname.new('tmp').expand_path
 
       include Procto.call, Concord.new(:path, :content)
 
@@ -21,7 +21,7 @@ module Tagfinder
       private
 
       def full_path
-        Pathname.new(TMP_DIR).join(path)
+        Pathname.new(DIR).join(path)
       end
 
       def construct_path
