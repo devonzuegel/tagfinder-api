@@ -38,6 +38,10 @@ module Tagfinder
         executions
       end
 
+      def to_s
+        to_a.map(&:to_s)
+      end
+
       class Execution
         include Concord::Public.new(:command, :output)
 
