@@ -24,15 +24,17 @@ module Tagfinder
     private
 
     def cleanup
-      files_to_remove = [data_filepath, params_filepath, *results_files].reject(&:nil?)
+      files_to_remove = [
+        data_filepath,
+        params_filepath,
+        *results_uploader.filepaths
+      ].reject(&:nil?)
+
       File.delete(*files_to_remove)
     end
 
-    def results_files
-      RESULTS_SUFFIXES.map do |suffix|
-        filename = "#{File.basename(data_filepath, '.*')}_#{suffix}"
-        Pathname(File.dirname(data_filepath)).join(filename)
-      end
+    def results_uploader
+      ResultsUploader.new(data_filepath)
     end
 
     def data_filepath
