@@ -1,4 +1,14 @@
 GIT
+  remote: git://github.com/httprb/http.git
+  revision: 55a8164498242099f115282ae35a5289b0b42be0
+  specs:
+    http (2.0.2)
+      addressable (~> 2.3)
+      http-cookie (~> 1.0)
+      http-form_data (~> 1.0.1)
+      http_parser.rb (~> 0.6.0)
+
+GIT
   remote: git://github.com/mbj/mutant.git
   revision: cfc09e921c4ecf6ea903effb4ddd581d4ad8ea22
   specs:
@@ -103,11 +113,6 @@ GEM
       guard (~> 2.1)
       guard-compat (~> 1.1)
       rspec (>= 2.99.0, < 4.0)
-    http (2.0.2)
-      addressable (~> 2.3)
-      http-cookie (~> 1.0)
-      http-form_data (~> 1.0.1)
-      http_parser.rb (~> 0.6.0)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
     http-form_data (1.0.1)
@@ -254,7 +259,7 @@ DEPENDENCIES
   dotenv-rails
   guard (= 2.13.0)
   guard-rspec (= 4.6.4)
-  http (= 2.0.2)
+  http!
   memoizable (= 0.4.2)
   mutant-rspec!
   procto (= 0.0.3)
@@ -265,6 +270,9 @@ DEPENDENCIES
   rubocop (~> 0.41)
   sinatra (= 1.4.7)
   sinatra-reloader (= 1.0)
+
+RUBY VERSION
+   ruby 2.3.0p0
 
 BUNDLED WITH
    1.12.5
