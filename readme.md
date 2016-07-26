@@ -2,7 +2,19 @@
 
 ## Setting up a new Ubuntu server
 
+1. `ssh` into the server you want to set up.
+
+    ```
+    $ ssh -i "privatekey.pem" ubuntu@ec2-id.aws-region.compute.amazonaws.com
+    ```
+
 1. TODO: add initial setup steps form Will.
+
+1. Install `ruby 2.3.0`. 
+
+    ```
+    $ rvm install ruby-2.3.0
+    ```
 
 1. Install `chruby` to install `ruby 2.3.0`. You can find more information about installing `rvm` on Ubuntu [here](http://ryanbigg.com/2014/10/ubuntu-ruby-ruby-install-chruby-and-you/).
 
@@ -48,17 +60,17 @@
         ruby 2.3.0p0 (2015-12-25 revision 53290) [x86_64-linux]
     ```
 
-1. Clone this repository onto your server.
+1. Clone this repository and navigate to it.
 
     ```shell
-    $ ssh -i "privatekey.pem" ubuntu@ec2-id.aws-region.compute.amazonaws.com
     $ git clone https://github.com/devonzuegel/tagfinder-api.git
+    $ cd tagfinder-api
     ```
 
 1. Install bundler on your server.
 
     ```shell
-    $ sudo apt-get install bundler
+    $ gem install bundler
     ```
 
 1. Run bundler.
@@ -73,3 +85,16 @@
     $ sudo apt-get install zlib1g-dev
     $ bundle
     ```
+
+1. Add `.env`. (Note that this file should be within the `tagfinder-api` directory.)
+    
+    ```shell
+    $ cat >> .env << EOF
+      AWS_BUCKET_REGION=us-west-2
+      AWS_ACCESS_KEY_ID=YOUR-AWS-ACCESS-KEY
+      AWS_SECRET_ACCESS_KEY=YOUR-AWS-ACCESS-KEY
+      AWS_S3_BUCKET=YOUR-S3-BUCKET
+      TAGFINDER_KEY=YOUR-TAGFINDER-KEY
+      EOF
+    ```
+
