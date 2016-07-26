@@ -1,14 +1,12 @@
 # Tagfinder API
 
-## Setting up a new Ubuntu server
+### Setting up a new Ubuntu server
 
 1. `ssh` into the server you want to set up.
 
     ```
     $ ssh -i "privatekey.pem" ubuntu@ec2-id.aws-region.compute.amazonaws.com
     ```
-
-1. TODO: add initial setup steps form Will.
 
 1. Install `ruby 2.3.0`. 
 
@@ -97,4 +95,76 @@
       TAGFINDER_KEY=YOUR-TAGFINDER-KEY
       EOF
     ```
+
+
+### Build tagfinder from source
+
+These commands work under Ubuntu 15.10. We encountered errors when running the same commands under Ubuntu 14.
+
+1. Update `apt-get`:
+
+    ```
+    sudo apt-get update
+    ```
+
+1. Install `git`:
+
+    ```
+    sudo apt-get install git-all
+    ```
+
+    Note: At least on my local machine, it takes a while to install `git`, and I got an error, but `git` ended up seeming to work correctly.  However, `apt-get` then kept giving error messages about `runit` and `git-daemon-run`.  I found a Q&A on how to fix the problem [here](http://askubuntu.com/questions/631615/problems-with-git-all-and-15-04). 
+
+    Based on that Q&A, I run these commands after running `sudo apt-get install git-all`, which seem to get rid of the error messages:
+
+    ```
+    sudo apt-get remove runit
+    sudo apt-get remove git-daemon-run
+    sudo apt-get autoremove
+    ```
+
+1. Install `llvm` (not sure if installing `llvm` is strictly necessary, but it seems like a good idea):
+
+    ```
+    sudo apt-get install llvm
+    ```
+
+1. Install `build-essential` tools (not sure if installing `build-essential` is strictly necessary, but it seems like a good idea; actually, seems to already be installed on my laptop, but running the command again doesn't hurt):
+
+    ```
+    sudo apt-get install build-essential
+    ```
+
+1. Install `clang` (currently this is equivalent to `sudo apt-get install clang-3.6`):
+
+    ```
+    sudo apt-get install clang
+    ```
+
+1. Install Boost C++ libraries:
+
+    ```
+    sudo apt-get install libboost-all-dev
+    ```
+
+1. Install `lldb`:
+
+    ```
+    sudo apt-get install lldb
+    ```
+
+1. Install C++ libraries and ABIs:
+
+    ```
+    sudo apt-get install libc++-dev libc++abi-dev
+    ```
+
+1. After installing all of the required packages, checkout the latest version of tagfinder using HTTPS:
+
+    `git checkout https://webyrd@bitbucket.org/webyrd/tagfinder.git`
+
+    `cd` to the top-level tagfinder directory, then build the tagfinder executable and make sure it runs:
+
+    `make squeaky; make example`
+
 
