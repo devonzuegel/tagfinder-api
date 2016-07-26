@@ -2,7 +2,6 @@ require 'dotenv'
 Dotenv.load
 
 require 'sinatra/base'
-require 'sinatra/reloader'
 require 'concord'
 require 'securerandom'
 require 'procto'
@@ -33,6 +32,7 @@ require './lib/tagfinder/downloader/file_creator'
 module Tagfinder
   class App < Sinatra::Base
     configure :development do
+      require 'sinatra/reloader'
       register Sinatra::Reloader
       also_reload './lib/*'
     end
