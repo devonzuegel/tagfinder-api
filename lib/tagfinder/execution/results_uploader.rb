@@ -49,7 +49,8 @@ module Tagfinder
       end
 
       def upload
-        # @uploaded = true
+        puts local_filepath
+        S3Uploader.call(local_filepath)
       end
     end
   end

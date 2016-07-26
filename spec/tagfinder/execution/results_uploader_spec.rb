@@ -45,14 +45,23 @@ RSpec.describe Tagfinder::Execution::ResultFile do
   end
 
   describe '#upload' do
-    it 'uploads the local file and returns the upload url' do
-      skip
+    before do
+      Aws::S3::Object.any_instance.stub(:upload_file)
+      allow(SecureRandom).to receive(:uuid).and_return('xxx')
+      stub_const(
+        'ENV',
+        ENV.to_hash.merge(
+          'AWS_ACCESS_KEY_ID'     => 'devons-access-key-id',
+          'AWS_SECRET_ACCESS_KEY' => 'devons-secret-access-key',
+          'AWS_BUCKET_REGION'     => 'devons-region',
+          'AWS_S3_BUCKET'         => 'devons-bucket-name'
+        )
+      )
     end
-  end
 
-  describe '#to_h' do
-    it '.....' do
-      skip
+    it 'uploads the local file and returns the upload url' do
+      expect(result_file.upload)
+        .to eql 'https://devons-bucket-name.s3.devons-region.amazonaws.com/results/xxx-file.txt'
     end
   end
 end
