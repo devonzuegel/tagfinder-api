@@ -37,6 +37,11 @@ module Tagfinder
       also_reload './lib/*'
     end
 
+    if ENV['SINATRA_ENV'] == 'production'
+      set :port, 80
+      set :environment, :production
+    end
+
     set show_exceptions: false
 
     before do
