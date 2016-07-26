@@ -23,6 +23,34 @@ module Tagfinder
       def urls
         # []
       end
+
+      private
+
+      def starting_statuses
+        # Hash[filepaths.map { |f| [f, { uploaded: false, removed: false }] }]
+      end
+    end
+
+    class ResultFile
+      include Concord.new(:local_filepath, :uploaded, :deleted)
+
+      attr_reader :local_filepath
+
+      def initialize(local_filepath)
+        super(local_filepath, false, false)
+      end
+
+      def uploaded?
+        uploaded
+      end
+
+      def deleted?
+        deleted
+      end
+
+      def upload
+        # @uploaded = true
+      end
     end
   end
 end

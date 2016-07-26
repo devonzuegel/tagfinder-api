@@ -24,3 +24,35 @@ RSpec.describe Tagfinder::Execution::ResultsUploader do
     end
   end
 end
+
+RSpec.describe Tagfinder::Execution::ResultFile do
+  let(:result_file) { described_class.new(Pathname.new('dir').join('file.txt')) }
+
+  describe '.new' do
+    it 'is initially not uploaded' do
+      expect(result_file.uploaded?).to eql false
+    end
+
+    it 'is initially not deleted' do
+      expect(result_file.deleted?).to eql false
+    end
+  end
+
+  describe '#local_filepath' do
+    it 'returns the local filepath' do
+      expect(result_file.local_filepath).to eql Pathname.new('dir').join('file.txt')
+    end
+  end
+
+  describe '#upload' do
+    it 'uploads the local file and returns the upload url' do
+      skip
+    end
+  end
+
+  describe '#to_h' do
+    it '.....' do
+      skip
+    end
+  end
+end
