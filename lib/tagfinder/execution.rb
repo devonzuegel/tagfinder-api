@@ -2,6 +2,16 @@ module Tagfinder
   class Execution
     include Procto.call, Memoizable, Anima.new(:data_url, :params_url, :downloader, :cli)
 
+    RESULTS_SUFFIXES =
+      %w[
+        chart.txt
+        filter_log.txt
+        filter_log2.txt
+        filtered.mzxml
+        massspec.csv
+        summary.txt
+      ].freeze
+
     def call
       history = cli
         .tagfinder(data_filepath: data_filepath, params_filepath: params_filepath)
@@ -14,36 +24,34 @@ module Tagfinder
     private
 
     def cleanup
+      files_to_remove = [data_filepath, params_filepath, *results_files].reject(&:nil?)
       File.delete(*files_to_remove)
     end
 
     def results_files
-      []
-    end
-
-    def files_to_remove
-      [data_filepath, params_filepath, *results_files].reject(&:nil?)
+      RESULTS_SUFFIXES.map do |suffix|
+        filename = "#{File.basename(data_filepath, '.*')}_#{suffix}"
+        Pathname(File.dirname(data_filepath)).join(filename)
+      end
     end
 
     def data_filepath
-      downloader.call(
-        url:          data_url,
-        filename:     File.basename(data_url),
-        file_creator: Downloader::MzxmlFileCreator,
-        connection:   Downloader::Connection
-      )
+      download(data_url, Downloader::MzxmlFileCreator)
     end
     memoize :data_filepath
 
     def params_filepath
-      return if params_url.nil?
+      download(params_url, Downloader::ParamsFileCreator) unless params_url.nil?
+    end
+    memoize :params_filepath
+
+    def download(file_url, file_creator)
       downloader.call(
-        url:          params_url,
-        filename:     File.basename(params_url),
-        file_creator: Downloader::ParamsFileCreator,
+        url:          file_url,
+        filename:     File.basename(file_url),
+        file_creator: file_creator,
         connection:   Downloader::Connection
       )
     end
-    memoize :params_filepath
   end
 end

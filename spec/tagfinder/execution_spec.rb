@@ -32,7 +32,10 @@ RSpec.describe Tagfinder::Execution do
     ).to eql(result)
     expect(File).to have_received(:delete).with(
       Pathname.new('tmp').expand_path.join(*%w[data xxx-blah.mzxml]),
-      Pathname.new('tmp').expand_path.join(*%w[params xxx-google.com])
+      Pathname.new('tmp').expand_path.join(*%w[params xxx-google.com]),
+      *described_class::RESULTS_SUFFIXES.map do |suffix|
+        Pathname.new('tmp').expand_path.join(*%W[data xxx-blah_#{suffix}])
+      end
     )
   end
 end
