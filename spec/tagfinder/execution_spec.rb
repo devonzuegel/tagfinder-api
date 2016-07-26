@@ -1,6 +1,20 @@
 RSpec.describe Tagfinder::Execution do
   CURRENT_DIR = Pathname.new('.').expand_path
 
+  before do
+    Aws::S3::Object.any_instance.stub(:upload_file)
+    allow(SecureRandom).to receive(:uuid).and_return('xxx')
+    stub_const(
+      'ENV',
+      ENV.to_hash.merge(
+        'AWS_ACCESS_KEY_ID'     => 'devons-access-key-id',
+        'AWS_SECRET_ACCESS_KEY' => 'devons-secret-access-key',
+        'AWS_BUCKET_REGION'     => 'devons-region',
+        'AWS_S3_BUCKET'         => 'devons-bucket-name'
+      )
+    )
+  end
+
   let(:history) do
     [{
       command: "bin/tagfinder-mac #{CURRENT_DIR}/tmp/data/xxx-blah.mzxml " \
@@ -12,7 +26,20 @@ RSpec.describe Tagfinder::Execution do
     }]
   end
 
-  let(:result) { { history: history, results_urls: [] } }
+  let(:result) do
+    base_domain = 'https://devons-bucket-name.s3.devons-region.amazonaws.com/'
+    {
+      history:      history,
+      results_urls: [
+        "#{base_domain}results/xxx/xxx-blah_chart.txt",
+        "#{base_domain}results/xxx/xxx-blah_filter_log.txt",
+        "#{base_domain}results/xxx/xxx-blah_filter_log2.txt",
+        "#{base_domain}results/xxx/xxx-blah_filtered.mzxml",
+        "#{base_domain}results/xxx/xxx-blah_massspec.csv",
+        "#{base_domain}results/xxx/xxx-blah_summary.txt"
+      ]
+    }
+  end
   let(:cli) { Sinatra::Base.development? ? Tagfinder::MacCLI.new : Tagfinder::UbuntuCLI.new }
 
   before do

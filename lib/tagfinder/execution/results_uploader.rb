@@ -21,37 +21,34 @@ module Tagfinder
       end
 
       def urls
-        # []
+        files.map(&:upload)
       end
 
       private
 
-      def starting_statuses
-        # Hash[filepaths.map { |f| [f, { uploaded: false, removed: false }] }]
+      def files
+        filepaths.map { |fp| ResultFile.new(fp) }
       end
     end
 
     class ResultFile
-      include Concord.new(:local_filepath, :uploaded, :deleted)
+      include Concord.new(:local_filepath, :uploaded), Memoizable
 
       attr_reader :local_filepath
 
       def initialize(local_filepath)
-        super(local_filepath, false, false)
+        super(local_filepath, false)
       end
 
       def uploaded?
         uploaded
       end
 
-      def deleted?
-        deleted
-      end
-
       def upload
-        puts local_filepath
+        @uploaded = true
         S3Uploader.call(local_filepath)
       end
+      memoize :upload
     end
   end
 end

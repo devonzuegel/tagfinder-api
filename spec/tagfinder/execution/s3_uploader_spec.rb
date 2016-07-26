@@ -29,7 +29,7 @@ RSpec.describe Tagfinder::Execution::S3Uploader do
 
       it 'returns the url of the uploaded file' do
         expect(described_class.call(Pathname.new('run.rb').expand_path))
-          .to eql 'https://devons-bucket-name.s3.devons-region.amazonaws.com/results/xxx-run.rb'
+          .to eql 'https://devons-bucket-name.s3.devons-region.amazonaws.com/results/xxx/run.rb'
       end
     end
 

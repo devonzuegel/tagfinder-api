@@ -4,7 +4,7 @@ module Tagfinder
       include Procto.call, Memoizable, Concord.new(:local_filepath, :s3_file)
 
       def initialize(local_filepath)
-        s3_key = "results/#{SecureRandom.uuid}-#{File.basename(local_filepath)}"
+        s3_key = "results/#{SecureRandom.uuid}/#{File.basename(local_filepath)}"
         super(local_filepath, S3Bucket.new.object(s3_key))
       end
 

@@ -16,9 +16,9 @@ module Tagfinder
       history = cli
         .tagfinder(data_filepath: data_filepath, params_filepath: params_filepath)
         .history
-      # TODO: upload results to S3
+      results_urls = results_uploader.urls # Upload results before deleting files
       cleanup
-      { history: history.to_s, results_urls: [] }
+      { history: history.to_s, results_urls: results_urls }
     end
 
     private
