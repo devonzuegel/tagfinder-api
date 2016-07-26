@@ -8,7 +8,7 @@ module Tagfinder
         .history
       # TODO: upload results to S3
       cleanup
-      history.to_a.map(&:to_s)
+      { history: history.to_a.map(&:to_s), results_urls: [] }
     end
 
     private
