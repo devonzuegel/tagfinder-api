@@ -7,15 +7,18 @@ RSpec.describe Tagfinder::KeyChecker do
   let(:extra_keys)    { minimal_keys + %w[JUNK] }
 
   it 'returns true when given minimal required keys' do
-    expect(described_class.call(minimal_keys)).to eql [true]
+    params = Hash[minimal_keys.map { |k| [k, nil] }]
+    expect(described_class.call(params)).to eql [true]
   end
 
   it 'returns true when given minimal required + any optional keys' do
-    expect(described_class.call(optional_keys)).to eql [true]
+    params = Hash[optional_keys.map { |k| [k, nil] }]
+    expect(described_class.call(params)).to eql [true]
   end
 
   it 'returns error when not given all required keys' do
-    expect(described_class.call(missing_keys)).to eql [
+    params = Hash[missing_keys.map { |k| [k, nil] }]
+    expect(described_class.call(params)).to eql [
       false,
       "Provided parameters don't match expected parameters:\n" \
       "  Provided: [\"key\"]\n  Missing:  [\"data_url\"]\n\n"  \
@@ -24,7 +27,8 @@ RSpec.describe Tagfinder::KeyChecker do
   end
 
   it 'returns error when not given all required keys + unexpected keys' do
-    expect(described_class.call(missing_extra)).to eql [
+    params = Hash[missing_extra.map { |k| [k, nil] }]
+    expect(described_class.call(params)).to eql [
       false,
       "Provided parameters don't match expected parameters:\n" \
       "  Provided: [\"key\", \"JUNK\"]\n  Missing:  [\"data_url\"]\n\n"  \
@@ -33,7 +37,8 @@ RSpec.describe Tagfinder::KeyChecker do
   end
 
   it 'returns error when not given unexpected keys' do
-    expect(described_class.call(extra_keys)).to eql [
+    params = Hash[extra_keys.map { |k| [k, nil] }]
+    expect(described_class.call(params)).to eql [
       false,
       "Provided parameters don't match expected parameters:\n" \
       "  Provided: [\"data_url\", \"key\", \"JUNK\"]\n  Missing:  []\n\n"  \

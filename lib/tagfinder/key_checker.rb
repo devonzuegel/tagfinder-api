@@ -6,6 +6,11 @@ module Tagfinder
     MINIMAL_KEYS  = DEFAULT_KEYS + %w[data_url key]
     OPTIONAL_KEYS = %w[params_url].freeze
 
+    def initialize(params)
+      super(params.keys)
+    end
+    private_class_method :new
+
     def call
       if minimal_keyset.subset?(user_keyset) && user_keyset.subset?(maximal_keyset)
         [true]

@@ -6,20 +6,23 @@ module Tagfinder
       history = cli
         .tagfinder(data_filepath: data_filepath, params_filepath: params_filepath)
         .history
-      cleanup
       # TODO: upload results to S3
+      cleanup
       history.to_a.map(&:to_s)
     end
 
     private
 
     def cleanup
-      ap files_to_remove
       File.delete(*files_to_remove)
     end
 
+    def results_files
+      []
+    end
+
     def files_to_remove
-      [data_filepath, params_filepath].reject(&:nil?)
+      [data_filepath, params_filepath, *results_files].reject(&:nil?)
     end
 
     def data_filepath

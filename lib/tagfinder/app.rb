@@ -31,6 +31,8 @@ module Tagfinder
       also_reload './lib/*'
     end
 
+    set show_exceptions: false
+
     before do
       content_type 'application/json'
     end
@@ -41,50 +43,31 @@ module Tagfinder
     end
 
     get '/tagfinder' do
-      [1, 2, 3].to_json
-      # fail ArgumentError
-
-      # cli = Sinatra::Base.development? ? Tagfinder::MacCLI.new : Tagfinder::UbuntuCLI.new
-      # Tagfinder::Execution.call(
-      #   data_url:   params.fetch('data_url'),
-      #   params_url: params['params_url'],
-      #   downloader: Tagfinder::Downloader,
-      #   cli:        cli
-      # ).to_json
+      cli = Sinatra::Base.development? ? Tagfinder::MacCLI.new : Tagfinder::UbuntuCLI.new
+      Tagfinder::Execution.call(
+        data_url:   params.fetch('data_url'),
+        params_url: params['params_url'],
+        downloader: Tagfinder::Downloader,
+        cli:        cli
+      ).to_json
     end
 
     error do
-      status 400
-      {
-        result:  'error',
-        type:    env['sinatra.error'].class,
-        message: env['sinatra.error'].message
-      }.to_json
+      Rack::Response.new(
+        [{ 'error' => env['sinatra.error'].message }.to_json],
+        500,
+        'Content-type' => 'application/json'
+      ).finish
     end
 
     def check_keys
-      default_params  = %w[splat captures].sort
-      optional_params = %w[params_url].sort
-      expected_params = %w[data_url key].sort
-      user_provided   = (params.keys - default_params).sort
-
-      valid_keysets = [
-        expected_params + optional_params + default_params,
-        expected_params + default_params
-      ]
-      valid_keysets.each do |keyset|
-        return true if Set.new(params.keys) == Set.new(keyset)
-      end
-
-      halt 400, "Provided parameters don't match expected parameters:\n" \
-                "  Provided: #{user_provided}\n" \
-                "  Expected: #{expected_params}\n" \
-                "  Optional: #{optional_params}\n"
+      success, message = KeyChecker.call(params)
+      fail ArgumentError, message unless success
     end
 
     def check_password
       return if params.fetch('key') == ENV['TAGFINDER_KEY']
-      halt 403
+      fail ArgumentError, 'Incorrect password'
     end
   end
 end
