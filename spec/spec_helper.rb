@@ -1,9 +1,11 @@
 require 'bundler/setup'
 require 'rspec'
+require 'rack/test'
+
 require 'awesome_print'
 require 'colorize'
+
 require './lib/tagfinder/app'
-require 'rack/test'
 
 ENV['RACK_ENV'] = 'test'
 
