@@ -11,7 +11,7 @@ module Tagfinder
       private_class_method :new
 
       def call
-        s3_file.upload_file(local_filepath)
+        s3_file.upload_file(local_filepath, acl: 'public-read')
         s3_file.public_url
       end
     end

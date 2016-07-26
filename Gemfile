@@ -5,6 +5,7 @@ gem 'sinatra-reloader', '1.0'
 gem 'colorize',         '0.7.7'
 gem 'awesome_print',    '1.6.1'
 
+gem 'dotenv-rails',     :require => 'dotenv/rails-now'
 gem 'rack',             '1.6.4'
 gem 'concord',          '0.1.5'
 gem 'procto',           '0.0.3'

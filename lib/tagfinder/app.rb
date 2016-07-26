@@ -1,3 +1,6 @@
+require 'dotenv'
+Dotenv.load
+
 require 'sinatra/base'
 require 'sinatra/reloader'
 require 'concord'
