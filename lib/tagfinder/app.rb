@@ -15,6 +15,7 @@ require 'abstract_class'
 require 'http'
 require 'pathname'
 require 'aws-sdk'
+require 'retries'
 
 require './lib/tagfinder/key_checker'
 require './lib/tagfinder/shell'

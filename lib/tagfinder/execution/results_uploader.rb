@@ -46,9 +46,19 @@ module Tagfinder
 
       def upload
         @uploaded = true
-        S3Uploader.call(local_filepath)
+        with_retries(max_tries: 8, handler: enoent_handler, rescue: Errno::ENOENT) do
+          S3Uploader.call(local_filepath)
+        end
       end
       memoize :upload
+
+      def enoent_handler
+        proc do |exception, attempt_number, total_delay|
+          puts "Handler saw a #{exception.class}; " \
+               "Retry attempt ##{attempt_number}; " \
+               "#{total_delay} seconds have passed"
+        end
+      end
     end
   end
 end

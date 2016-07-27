@@ -15,6 +15,7 @@ gem 'adamantium',       '0.2.0'
 gem 'http',             github: 'httprb/http' # '2.0.2'
 gem 'memoizable',       '0.4.2'
 gem 'aws-sdk',          '2.2.37'
+gem 'retries',          '0.0.5'
 
 group :test do
   gem 'rack-test',      '0.6.3'
