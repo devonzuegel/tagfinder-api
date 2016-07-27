@@ -15,9 +15,7 @@ module Tagfinder
 
     def handler
       proc do |e, attempt_number, total_delay|
-        puts "Retry attempt ##{attempt_number} [#{total_delay} seconds have passed]. Saw:"
-        puts "    #{e.message} (#{e.class})".gray
-        puts "       #{e.backtrace.first}".gray
+        puts handler_message(e, attempt_number, total_delay)
       end
     end
 
@@ -31,15 +29,29 @@ module Tagfinder
       }
     end
 
+    def handler_message(e, attempt_number, total_delay)
+      "Retry attempt ##{attempt_number} [#{total_delay} seconds have passed]. Saw:\n".white +
+        "  [#{e.class}] #{e.message}\n"  \
+        "  #{e.backtrace.first} \n".gray
+    end
+
     class ENOENT < Retrier
       OPTIONS = {
-        max_tries:          15,
+        max_tries:          3,
         base_sleep_seconds: 4,
         max_sleep_seconds:  100
-      }
+      }.freeze
 
       def initialize(block)
         super(Errno::ENOENT, block, OPTIONS)
+      end
+
+      def handler_message(e, attempt_number, total_delay)
+        msg = super(e, attempt_number, total_delay) + "  Directory contents:\n".gray
+        Dir.entries(Pathname.new('tmp').join('data').expand_path).each do |entry|
+          msg += "    #{entry}\n".gray
+        end
+        msg
       end
     end
   end
