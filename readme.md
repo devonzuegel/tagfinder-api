@@ -14,7 +14,7 @@
     $ rvm install ruby-2.3.0
     ```
 
-1. Install `chruby` to install `ruby 2.3.0`. You can find more information about installing `rvm` on Ubuntu [here](http://ryanbigg.com/2014/10/ubuntu-ruby-ruby-install-chruby-and-you/).
+1. Install `chruby` to install `ruby 2.3.0`. You can find more information about installing `rvm` on Ubuntu [here](http://ryanbigg.com/2014/10/ubuntu-ruby-ruby-install-chruby-and-you/). (TODO: This may not be necessary.)
 
     ```shell
     $ sudo apt-get install build-essential
@@ -95,6 +95,10 @@
       TAGFINDER_KEY=YOUR-TAGFINDER-KEY
       EOF
     ```
+
+1. Create the following directories: `tagfinder-api/tmp/data` and `tagfinder-api/tmp/params` 
+1. Now, start a new `screen`, `cd` into the `tagfinder-api` directory, and try starting the server with `$ sudo ruby run.rb`.
+    - If you get an error like "cannot load such file -- sinatra/reloader" (or some other required gem), run `$ sudo gem install missing-gem-name`
 
 
 ### Build tagfinder from source
