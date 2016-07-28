@@ -37,7 +37,7 @@ module Tagfinder
 
     class ENOENT < Retrier
       OPTIONS = {
-        max_tries:          3,
+        max_tries:          9,
         base_sleep_seconds: 4,
         max_sleep_seconds:  100
       }.freeze
