@@ -97,6 +97,13 @@
     ```
 
 1. Create the following directories: `tagfinder-api/tmp/data` and `tagfinder-api/tmp/params` 
+
+1. Update permissions on the tagfinder binary.
+
+    ```
+    $ chmod u+x bin/tagfinder
+    ```
+
 1. Now, start a new `screen`, `cd` into the `tagfinder-api` directory, and try starting the server with `$ sudo ruby run.rb`.
     - If you get an error like "cannot load such file -- sinatra/reloader" (or some other required gem), run `$ sudo gem install missing-gem-name`. (TODO: This may not be necessary.)
 
