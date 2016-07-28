@@ -56,7 +56,7 @@ module Tagfinder
     end
 
     get '/tagfinder' do
-      cli = Sinatra::Base.development? ? Tagfinder::MacCLI.new : Tagfinder::UbuntuCLI.new
+      cli = ENV['SINATRA_ENV'] == 'production' ? Tagfinder::UbuntuCLI.new : Tagfinder::MacCLI.new
       Tagfinder::Execution.call(
         data_url:   params.fetch('data_url'),
         params_url: params['params_url'],
