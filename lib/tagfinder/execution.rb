@@ -16,6 +16,7 @@ module Tagfinder
       history = cli
         .tagfinder(data_filepath: data_filepath, params_filepath: params_filepath)
         .history
+      ap history.to_s
       results_urls = results_uploader.urls # Upload results before deleting files
       cleanup
       { history: history.to_s, results_urls: results_urls }

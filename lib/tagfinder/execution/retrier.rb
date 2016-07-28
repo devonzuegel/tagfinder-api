@@ -37,9 +37,9 @@ module Tagfinder
 
     class ENOENT < Retrier
       OPTIONS = {
-        max_tries:          9,
+        max_tries:          2,
         base_sleep_seconds: 4,
-        max_sleep_seconds:  100
+        max_sleep_seconds:  30
       }.freeze
 
       def initialize(block)
