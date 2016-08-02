@@ -2,41 +2,45 @@ module Tagfinder
   class Execution
     include Procto.call, Memoizable, Anima.new(:data_url, :params_url, :downloader, :cli)
 
-    RESULTS_SUFFIXES =
-      %w[
-        chart.txt
-        filter_log.txt
-        filter_log2.txt
-        filtered.mzxml
-        massspec.csv
-        summary.txt
-      ].freeze
-
     def call
-      history = cli
-        .tagfinder(data_filepath: data_filepath, params_filepath: params_filepath)
-        .history
-      ap history.to_s
-      results_urls = results_uploader.urls # Upload results before deleting files
+      result = { history: history }
+
+      if successful?
+        result[:results_urls] = results_uploader.urls
+      else
+        result[:error] = stderrs.join("\n")
+      end
+
       cleanup
-      { history: history.to_s, results_urls: results_urls }
+      result
     end
 
     private
 
     def cleanup
-      files_to_remove = [
-        data_filepath,
-        params_filepath,
-        *results_uploader.filepaths
-      ].reject(&:nil?)
-
+      files_to_remove  = [data_filepath, params_filepath].reject(&:nil?)
+      files_to_remove += results_uploader.filepaths if successful?
       File.delete(*files_to_remove)
     end
 
     def results_uploader
       ResultsUploader.new(data_filepath)
     end
+
+    def successful?
+      stderrs.join.empty?
+    end
+
+    def stderrs
+      history.map { |output| output[:stderr] }
+    end
+
+    def history
+      cli
+        .tagfinder(data_filepath: data_filepath, params_filepath: params_filepath)
+        .history.to_s
+    end
+    memoize :history
 
     def data_filepath
       download(data_url, Downloader::MzxmlFileCreator)

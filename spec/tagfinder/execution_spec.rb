@@ -48,7 +48,7 @@ RSpec.describe Tagfinder::Execution do
     allow(File).to receive(:delete)
   end
 
-  it 'runs a request' do
+  it 'returns the expected result' do
     expect(
       Tagfinder::Execution.call(
         data_url:   'http://google.com/blah.mzxml',
@@ -57,12 +57,28 @@ RSpec.describe Tagfinder::Execution do
         cli:        cli
       )
     ).to eql(result)
+  end
+
+  it 'runs a request' do
+    Tagfinder::Execution.call(
+      data_url:   'http://google.com/blah.mzxml',
+      params_url: 'http://google.com',
+      downloader: Tagfinder::Downloader,
+      cli:        cli
+    )
+
     expect(File).to have_received(:delete).with(
       Pathname.new('tmp').expand_path.join(*%w[data xxx-blah.mzxml]),
       Pathname.new('tmp').expand_path.join(*%w[params xxx-google.com]),
-      *described_class::RESULTS_SUFFIXES.map do |suffix|
+      *Tagfinder::Execution::ResultsUploader::RESULTS_SUFFIXES.map do |suffix|
         Pathname.new('tmp').expand_path.join(*%W[data xxx-blah_#{suffix}])
       end
     )
+  end
+
+  describe '#successful?' do
+    it 'is false if the history contains an error' do
+      skip
+    end
   end
 end
