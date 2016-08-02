@@ -8,7 +8,7 @@ module Tagfinder
       if successful?
         result[:results_urls] = results_uploader.urls
       else
-        result[:error] = stderrs.join("\n")
+        result[:error] = history.map { |output| output[:stderr] }.join("\n")
       end
 
       cleanup
@@ -28,11 +28,7 @@ module Tagfinder
     end
 
     def successful?
-      stderrs.join.empty?
-    end
-
-    def stderrs
-      history.map { |output| output[:stderr] }
+      history.map { |output| output[:status] }.reduce(&:|) == 0
     end
 
     def history
