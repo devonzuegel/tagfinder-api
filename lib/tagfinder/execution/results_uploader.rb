@@ -22,13 +22,13 @@ module Tagfinder
       end
 
       def urls
-        files.select { |f| File.file?(f.local_filepath) }.map(&:upload)
+        files.map(&:upload)
       end
 
       private
 
       def files
-        filepaths.map { |fp| ResultFile.new(fp) }
+        filepaths.select { |fp| File.file?(fp) }.map { |fp| ResultFile.new(fp) }
       end
     end
 
