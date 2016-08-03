@@ -37,7 +37,7 @@ module Tagfinder
       puts "\n#{Time.now} >".gray + "  Deleting the following files:".blue
       files_to_remove.each { |f| puts "      - #{f}".white }
 
-      File.delete(*files_to_remove)
+      File.delete(*files_to_remove.select { |fp| File.file?(fp) })
     end
 
     def results_uploader
