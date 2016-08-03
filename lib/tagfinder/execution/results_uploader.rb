@@ -10,6 +10,7 @@ module Tagfinder
           filter_log2.txt
           filtered.mzxml
           massspec.csv
+          scoring.txt
           summary.txt
         ].freeze
 
@@ -21,7 +22,7 @@ module Tagfinder
       end
 
       def urls
-        files.map(&:upload)
+        files.select { |f| File.file?(f.local_filepath) }.map(&:upload)
       end
 
       private

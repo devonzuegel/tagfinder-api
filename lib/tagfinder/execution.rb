@@ -20,15 +20,10 @@ module Tagfinder
       puts "      - #{params_url}".white
       ap result
 
-      Thread.new do
-
-        puts "\n#{Time.now} >".gray + "  Will begin cleanup in 120 seconds...".yellow
-        sleep 120
-        puts "\n#{Time.now} >".gray + "  Cleaning up execution with the following parameters:".yellow
-        puts "      - #{data_url}".white
-        puts "      - #{params_url}".white
-        cleanup
-      end
+      puts "\n#{Time.now} >".gray + "  Cleaning up execution with the following parameters:".yellow
+      puts "      - #{data_url}".white
+      puts "      - #{params_url}".white
+      cleanup
 
       result
     end
