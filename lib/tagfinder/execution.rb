@@ -31,13 +31,10 @@ module Tagfinder
     private
 
     def cleanup
-      files_to_remove  = [data_filepath, params_filepath].reject(&:nil?)
-      files_to_remove += results_uploader.filepaths if successful?
-
       puts "\n#{Time.now} >".gray + "  Deleting the following files:".blue
       files_to_remove.each { |f| puts "      - #{f}".white }
 
-      File.delete(*files_to_remove.select { |fp| File.file?(fp) })
+      File.delete(*files_to_remove)
     end
 
     def results_uploader
@@ -72,6 +69,14 @@ module Tagfinder
         file_creator: file_creator,
         connection:   Downloader::Connection
       )
+    end
+
+    def files_to_remove
+        [
+          data_filepath,
+          params_filepath,
+          *results_uploader.filepaths
+        ].select { |fp| !fp.nil? && File.file?(fp) }
     end
   end
 end
