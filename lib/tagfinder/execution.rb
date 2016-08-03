@@ -3,6 +3,10 @@ module Tagfinder
     include Procto.call, Memoizable, Anima.new(:data_url, :params_url, :downloader, :cli)
 
     def call
+      puts "\n#{Time.now} >".gray + "  Beginning execution with the following parameters:".blue
+      puts "      - #{data_url}".white
+      puts "      - #{params_url}".white
+
       result = { history: history }
 
       if successful?
@@ -11,7 +15,21 @@ module Tagfinder
         result[:error] = history.map { |output| output[:stderr] }.join("\n")
       end
 
-      cleanup
+      puts "\n#{Time.now} >".gray + "  Finished execution with the following parameters:".green
+      puts "      - #{data_url}".white
+      puts "      - #{params_url}".white
+      ap result
+
+      Thread.new do
+
+        puts "\n#{Time.now} >".gray + "  Will begin cleanup in 120 seconds...".yellow
+        sleep 120
+        puts "\n#{Time.now} >".gray + "  Cleaning up execution with the following parameters:".yellow
+        puts "      - #{data_url}".white
+        puts "      - #{params_url}".white
+        cleanup
+      end
+
       result
     end
 
@@ -20,6 +38,10 @@ module Tagfinder
     def cleanup
       files_to_remove  = [data_filepath, params_filepath].reject(&:nil?)
       files_to_remove += results_uploader.filepaths if successful?
+
+      puts "\n#{Time.now} >".gray + "  Deleting the following files:".blue
+      files_to_remove.each { |f| puts "      - #{f}".white }
+
       File.delete(*files_to_remove)
     end
 

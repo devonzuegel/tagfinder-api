@@ -22,6 +22,8 @@ module Tagfinder
     before '/*' do
       check_keys
       check_password
+      puts "\n#{Time.now} >".gray + "  Received the following parameters:".white
+      ap params
     end
 
     get '/tagfinder' do
