@@ -4,8 +4,8 @@ module Tagfinder
 
     def call
       puts "\n#{Time.now} >".gray + "  Beginning execution with the following parameters:".blue
-      puts "      - #{data_url}".white
-      puts "      - #{params_url}".white
+      puts '      data_url:   '.black + "#{data_url}".white
+      puts '      params_url: '.black + "#{params_url || 'used default params'.gray}".white
 
       result = { history: history }
 
@@ -16,13 +16,13 @@ module Tagfinder
       end
 
       puts "\n#{Time.now} >".gray + "  Finished execution with the following parameters:".green
-      puts "      - #{data_url}".white
-      puts "      - #{params_url}".white
+      puts '      data_url:   '.black + "#{data_url}".white
+      puts '      params_url: '.black + "#{params_url || 'used default params'.gray}".white
       ap result
 
       puts "\n#{Time.now} >".gray + "  Cleaning up execution with the following parameters:".yellow
-      puts "      - #{data_url}".white
-      puts "      - #{params_url}".white
+      puts '      data_url:   '.black + "#{data_url}".white
+      puts '      params_url: '.black + "#{params_url || 'used default params'.gray}".white
       cleanup
 
       result

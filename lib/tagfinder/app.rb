@@ -28,12 +28,17 @@ module Tagfinder
 
     get '/tagfinder' do
       cli = ENV['SINATRA_ENV'] == 'production' ? Tagfinder::UbuntuCLI.new : Tagfinder::MacCLI.new
-      Tagfinder::Execution.call(
-        data_url:   params.fetch('data_url'),
-        params_url: params['params_url'],
-        downloader: Tagfinder::Downloader,
-        cli:        cli
-      ).to_json
+
+      Retrier::ENOENT.call(
+        proc do
+          Tagfinder::Execution.call(
+            data_url:   params.fetch('data_url'),
+            params_url: params['params_url'],
+            downloader: Tagfinder::Downloader,
+            cli:        cli
+          ).to_json
+        end
+      )
     end
 
     error do

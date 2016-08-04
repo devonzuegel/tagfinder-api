@@ -54,5 +54,24 @@ module Tagfinder
         msg
       end
     end
+
+    class Timeout < Retrier
+      NUM_MINUTES = 10
+      OPTIONS = {
+        max_tries:          4,
+        base_sleep_seconds: 1,
+        max_sleep_seconds:  30
+      }.freeze
+
+      def initialize(block)
+        super(Timeout::Error, block, OPTIONS)
+      end
+
+      def call
+        with_retries(options) do |retry_count|
+          Timeout.timeout(60 * NUM_MINUTES) { block.call(retry_count) }
+        end
+      end
+    end
   end
 end
