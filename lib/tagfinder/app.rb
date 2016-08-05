@@ -29,7 +29,7 @@ module Tagfinder
     get '/tagfinder' do
       cli = ENV['SINATRA_ENV'] == 'production' ? Tagfinder::UbuntuCLI.new : Tagfinder::MacCLI.new
 
-      Retrier::ENOENT.call(
+      Retrier::Timeout.call(
         proc do
           Tagfinder::Execution.call(
             data_url:   params.fetch('data_url'),
