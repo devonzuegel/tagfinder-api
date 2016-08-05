@@ -57,7 +57,7 @@ module Tagfinder
     end
 
     class Timeout < Retrier
-      NUM_MINUTES = 12
+      NUM_MINUTES = 20
       OPTIONS = {
         max_tries:          4,
         base_sleep_seconds: 1,
