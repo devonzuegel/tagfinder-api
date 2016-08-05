@@ -29,10 +29,11 @@ module Tagfinder
       }
     end
 
-    def handler_message(e, attempt_number, total_delay)
-      "Retry attempt ##{attempt_number} [#{total_delay} seconds have passed]. Saw:\n".white +
+    def handler_message(e, attempt_num, total_delay)
+      puts "\n#{Time.now} >".gray \
+        "Retry attempt ##{attempt_num} [#{total_delay} seconds have passed]. Backtrace:\n".red \
         "  [#{e.class}] #{e.message}\n"  \
-        "  #{e.backtrace.first} \n".gray
+        "  #{e.backtrace.first}\n".gray
     end
 
     class ENOENT < Retrier
