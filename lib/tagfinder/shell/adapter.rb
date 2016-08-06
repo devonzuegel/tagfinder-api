@@ -11,13 +11,13 @@ module Tagfinder
           puts 'stdout:'.gray
           stdout.each do |line|
             stdouts << line
-            puts line.blue
+            print line.blue
           end
 
           puts 'stderr:'.gray
           stderr.each do |line|
             stderrs << line
-            puts line.magenta
+            print line.magenta
           end
 
           [stdouts, stderrs, process]
