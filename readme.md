@@ -2,6 +2,8 @@
 
 ### Setting up a new Ubuntu server
 
+0. Launch an EC2 instance of type `ubuntu/images/hvm/ubuntu-wily-15.10-amd64-server-20160715`. (Search "ami-92e21cf3" in the Community AMIs tab.)
+
 1. `ssh` into the server you want to set up.
 
     ```
@@ -96,6 +98,14 @@
       EOF
     ```
 
+1. Open port 80 on the ec2 instance
+
+- Go to the "Network & Security" -> Security Group settings in the left hand navigation
+- Find the Security Group that your instance is apart of
+- Click on Inbound Rules
+- Use the drop down and add HTTP (port 80)
+- Click Apply
+
 1. Create the following directories: `tagfinder-api/tmp/data` and `tagfinder-api/tmp/params` 
 
 1. Update permissions on the tagfinder binary.
@@ -172,7 +182,7 @@ These commands work under Ubuntu 15.10. We encountered errors when running the 
 
 1. After installing all of the required packages, checkout the latest version of tagfinder using HTTPS:
 
-    `git checkout https://webyrd@bitbucket.org/webyrd/tagfinder.git`
+    `git clone https://webyrd@bitbucket.org/webyrd/tagfinder.git`
 
     `cd` to the top-level tagfinder directory, then build the tagfinder executable and make sure it runs:
 
