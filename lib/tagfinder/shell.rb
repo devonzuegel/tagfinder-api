@@ -18,10 +18,10 @@ module Tagfinder
     class Output
       include Anima.new(:stdout, :stderr, :status)
 
-      def self.coerce(_, stdout, stderr, process)
+      def self.coerce(stdout, stderr, process)
         new(
-          stdout: stdout.read,
-          stderr: stderr.read,
+          stdout: stdout,
+          stderr: stderr,
           status: process.value
         )
       end
