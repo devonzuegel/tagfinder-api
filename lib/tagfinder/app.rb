@@ -9,7 +9,7 @@ module Tagfinder
     end
 
     if ENV['SINATRA_ENV'] == 'production'
-      set :port, 80
+      set :port, 8000
       set :environment, :production
     end
 
