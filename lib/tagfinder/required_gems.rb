@@ -1,6 +1,13 @@
-require 'active_support'
+DOT_ENV_PATH = Pathname.new('').join('.env').expand_path
+
+def env_undefined?
+  !File.file?(DOT_ENV_PATH)
+end
+
+fail Exception, 'Please define your environment in .env' if env_undefined?
+
 require 'dotenv'
-Dotenv.load
+Dotenv.load(DOT_ENV_PATH)
 
 require 'sinatra/base'
 require 'concord'
