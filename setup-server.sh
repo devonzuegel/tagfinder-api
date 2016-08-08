@@ -45,6 +45,7 @@ ruby -v
 
 ### Redirect requests to port 80 to port 8000 ###
 
+echo '>> Redirecting requests to port 80 to port 8000...'
 sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8000
 
 ### Clone server repository
@@ -61,11 +62,11 @@ gem install bundler
 bundle install
 
 echo '-------------------------------------'
-echo '>>  You have successfully downloaded the tagfinder-api server code.'
-echo '>>  Now, open port 80 on your EC2 instance:'
-echo '>>    stackoverflow.com/questions/5004159/opening-port-80-ec2-amazon-web-services'
-echo '>>  Then, run the following command in a "screen" session to start the server:'
-echo '>>     $ ruby run.rb'
+echo '>> You have successfully downloaded the tagfinder-api server code.'
+echo '>> Now, open port 80 on your EC2 instance:'
+echo '>>   stackoverflow.com/questions/5004159/opening-port-80-ec2-amazon-web-services'
+echo '>> Then, run the following command in a "screen" session to start the server:'
+echo '>>    $ ruby run.rb'
 
 
 # # \curl -sSL https://get.rvm.io | bash -s stable --ruby
