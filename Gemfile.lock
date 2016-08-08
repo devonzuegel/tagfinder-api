@@ -253,6 +253,7 @@ PLATFORMS
 DEPENDENCIES
   abstract_class (= 1.0.1)
   adamantium (= 0.2.0)
+  anima (= 0.3.0)
   awesome_print (= 1.6.1)
   aws-sdk (= 2.2.37)
   colorize (= 0.7.7)
