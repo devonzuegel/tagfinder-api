@@ -1,5 +1,9 @@
+echo 'Beginning set up of tagfinder-api'
+echo '-------------------------------------'
+
 ### Install necessary libraries ###
 
+echo '>> Installing libraries...'
 sudo apt-get -y update
 sudo apt-get -y install git-all
 sudo apt-get -y remove runit
@@ -14,6 +18,7 @@ sudo apt-get -y install libc++-dev libc++abi-dev
 
 ### Build tagfinder from source ###
 
+echo '>> Building tagfinder from source...'
 git clone https://DevonMarisa@bitbucket.org/webyrd/tagfinder.git
 make squeaky; make example
 
@@ -22,16 +27,18 @@ make squeaky; make example
 sudo apt-get update
 sudo apt-get -y install git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev python-software-properties libffi-dev
 
+echo '>> Installing rbenv...'
 cd
 git clone git://github.com/sstephenson/rbenv.git .rbenv
 echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
 echo 'eval "$(rbenv init -)"' >> ~/.bashrc
-exec $SHELL
+source ~/.bashrc
 
 git clone git://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
 echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
-exec $SHELL
+source ~/.bashrc
 
+echo '>> Installing ruby 2.3.0...'
 rbenv install 2.3.0
 rbenv global 2.3.0
 ruby -v
@@ -42,13 +49,23 @@ sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8000
 
 ### Clone server repository
 
+echo '>> Cloning tagfinder-api...'
 git clone https://github.com/devonzuegel/tagfinder-api.git
 
-echo 'You have successfully downloaded the tagfinder-api server code.'
-echo 'Now, open port 80 on your EC2 instance:'
-echo '  stackoverflow.com/questions/5004159/opening-port-80-ec2-amazon-web-services'
-echo 'Then, run the following command in a "screen" session to start the server:'
-echo '   $ sudo ruby tagfinder-api/run.rb'
+echo '>> Moving tagfinder executable built from source into tagfinder-api server repository...'
+yes | mv tagfinder/ms2_filter/tagfinder tagfinder-api/bin/tagfinder
+
+echo '>> Bundling tagfinder-api dependencies...'
+cd tagfinder-api
+gem install bundler
+bundle install
+
+echo '-------------------------------------'
+echo '>>  You have successfully downloaded the tagfinder-api server code.'
+echo '>>  Now, open port 80 on your EC2 instance:'
+echo '>>    stackoverflow.com/questions/5004159/opening-port-80-ec2-amazon-web-services'
+echo '>>  Then, run the following command in a "screen" session to start the server:'
+echo '>>     $ ruby run.rb'
 
 
 # # \curl -sSL https://get.rvm.io | bash -s stable --ruby
