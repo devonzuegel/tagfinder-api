@@ -1,3 +1,4 @@
+require 'active_support'
 require 'dotenv'
 Dotenv.load
 
