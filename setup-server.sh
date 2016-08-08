@@ -66,6 +66,9 @@ mkdir tmp
 mkdir tmp/data
 mkdir tmp/params
 
+echo '>> Updating bin/tagfinder permissions...'
+chmod u+x bin/tagfinder
+
 echo '-------------------------------------'
 echo '>> You have successfully downloaded the tagfinder-api server code.'
 echo '>> Now, open port 80 on your EC2 instance:'

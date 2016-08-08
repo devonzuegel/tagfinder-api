@@ -28,3 +28,7 @@ SINATRA_ENV=production
 
 TAGFINDER_KEY=YOUR-SELF-DEFINED-API-KEY-GOES-HERE
 ```
+
+### Miscellaneous
+
+- If you receive the error "Errno::EACCES - Permission denied - bin/tagfinder", run `$ chmod u+x bin/tagfinder` to update permissions on the executable.
