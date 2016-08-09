@@ -6,15 +6,19 @@
 
 1. `ssh` into the server you want to set up.
 
-    ```
-    $ ssh -i "privatekey.pem" ubuntu@ec2-id.aws-region.compute.amazonaws.com
+    ```shell
+    $ chmod 400 yourprivatekey.pem
+    $ ssh -i "yourprivatekey.pem" ubuntu@ec2-id.aws-region.compute.amazonaws.com
     ```
 
 2. Download and run the `setup-server.sh` script from this repository into your new ec2 instance.
 
 ```shell
-sh setup-server.sh
+$ wget https://raw.githubusercontent.com/devonzuegel/tagfinder-api/master/setup-server.sh
+$ sh setup-server.sh
 ```
+
+> NOTE: You will have to input your Bitbucket password midway through the script.
 
 3. Create a file named `.env` inside of `tagfinder-api/` (created by `setup-server.sh`) with the following contents:
 
