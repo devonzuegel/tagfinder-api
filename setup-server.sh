@@ -11,21 +11,15 @@ echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> $HOME/.bashrc
 echo 'eval "$(rbenv init -)"' >> $HOME/.bashrc
 . $HOME/.bashrc
 
-read -n1 -rsp $'Press any key to continue or Ctrl+C to exit...\n'
-
 git clone git://github.com/sstephenson/ruby-build.git $HOME/.rbenv/plugins/ruby-build
 echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> $HOME/.bashrc
 . $HOME/.bashrc
-
-read -n1 -rsp $'Press any key to continue or Ctrl+C to exit...\n'
 
 echo ''
 echo '>> Installing ruby 2.3.0...'
 rbenv install 2.3.0
 rbenv global 2.3.0
 ruby -v
-
-read -n1 -rsp $'Press any key to continue or Ctrl+C to exit...\n'
 
 ### Redirect requests to port 80 to port 8000 ###
 
