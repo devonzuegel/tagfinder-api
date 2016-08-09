@@ -15,7 +15,7 @@
 
 ```shell
 $ wget https://raw.githubusercontent.com/devonzuegel/tagfinder-api/master/build-tagfinder.sh
-$ sh setup-server.sh
+$ sh build-tagfinder.sh
 ```
 
 1. Download and run the `setup-server.sh` script from this repository into your new ec2 instance.
