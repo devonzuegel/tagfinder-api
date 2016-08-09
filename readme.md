@@ -33,6 +33,21 @@ SINATRA_ENV=production
 TAGFINDER_KEY=YOUR-SELF-DEFINED-API-KEY-GOES-HERE
 ```
 
+4. Now, open port 80 on your EC2 instance. (More information at [stackoverflow.com/questions/5004159/opening-port-80-ec2-amazon-web-services](http://stackoverflow.com/questions/5004159/opening-port-80-ec2-amazon-web-services))
+
+5. To start the server:
+
+```shell
+$ screen # Create a new screen session so it remains running after you close your terminal.
+$ ruby run.rb
+```
+
+6. To reattach to the screen sesion after you have closed your terminal:
+
+```shell 
+$ screen -r # Reattach to the running screen session
+```
+
 ### Miscellaneous
 
 - If you receive the error "Errno::EACCES - Permission denied - bin/tagfinder", run `$ chmod u+x bin/tagfinder` to update permissions on the executable.
