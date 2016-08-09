@@ -48,7 +48,8 @@ module Tagfinder
       end
 
       def handler_message(e, attempt_number, total_delay)
-        msg = super(e, attempt_number, total_delay) + "  Directory contents:\n".gray
+        super(e, attempt_number, total_delay)
+        msg = "  Directory contents:\n".gray
         Dir.entries(Pathname.new('tmp').join('data').expand_path).each do |entry|
           msg += "    #{entry}\n".gray
         end
