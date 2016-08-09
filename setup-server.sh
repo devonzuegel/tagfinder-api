@@ -1,29 +1,3 @@
-echo 'Beginning set up of tagfinder-api'
-echo '-------------------------------------'
-
-### Install necessary libraries ###
-
-echo ''
-echo '>> Installing libraries...'
-sudo apt-get -y update
-sudo apt-get -y install git-all
-sudo apt-get -y remove runit
-sudo apt-get -y remove git-daemon-run
-sudo apt-get -y autoremove
-sudo apt-get -y install llvm
-sudo apt-get -y install build-essential
-sudo apt-get -y install clang
-sudo apt-get -y install libboost-all-dev
-sudo apt-get -y install lldb
-sudo apt-get -y install libc++-dev libc++abi-dev
-
-### Build tagfinder from source ###
-
-echo ''
-echo '>> Building tagfinder from source...'
-git clone https://DevonMarisa@bitbucket.org/webyrd/tagfinder.git
-make squeaky; make example
-
 ### Install ruby ###
 
 sudo apt-get update
@@ -35,17 +9,23 @@ cd
 git clone git://github.com/sstephenson/rbenv.git .rbenv
 echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> $HOME/.bashrc
 echo 'eval "$(rbenv init -)"' >> $HOME/.bashrc
-source $HOME/.bashrc
+. $HOME/.bashrc
+
+read -n1 -rsp $'Press any key to continue or Ctrl+C to exit...\n'
 
 git clone git://github.com/sstephenson/ruby-build.git $HOME/.rbenv/plugins/ruby-build
 echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> $HOME/.bashrc
-source $HOME/.bashrc
+. $HOME/.bashrc
+
+read -n1 -rsp $'Press any key to continue or Ctrl+C to exit...\n'
 
 echo ''
 echo '>> Installing ruby 2.3.0...'
 rbenv install 2.3.0
 rbenv global 2.3.0
 ruby -v
+
+read -n1 -rsp $'Press any key to continue or Ctrl+C to exit...\n'
 
 ### Redirect requests to port 80 to port 8000 ###
 
@@ -85,14 +65,3 @@ echo '>> Now, open port 80 on your EC2 instance:'
 echo '>>   stackoverflow.com/questions/5004159/opening-port-80-ec2-amazon-web-services'
 echo '>> Then, run the following command in a "screen" session to start the server:'
 echo '>>    $ ruby run.rb'
-
-
-# # \curl -sSL https://get.rvm.io | bash -s stable --ruby
-# gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
-# \curl -sSL https://get.rvm.io | bash -s stable --ruby
-# source /home/ubuntu/.rvm/scripts/rvm
-# sudo apt-get ruby
-# ruby -v
-#   ruby 2.3.0p0 (2015-12-25 revision 53290) [x86_64-linux]
-# sudo gem install bundler
-# sudo bundle install
