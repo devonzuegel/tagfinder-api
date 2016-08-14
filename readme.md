@@ -53,7 +53,8 @@
 
     ```shell
     screen # Create a new screen session so it remains running after you close your terminal.
-    ruby run.rb
+    cd tagfinder-api 
+    thin start
     ```
 
 - To reattach to the screen sesion after you have closed your terminal:

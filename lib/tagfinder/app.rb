@@ -1,3 +1,8 @@
+require 'rubygems'
+require 'bundler'
+
+Bundler.require
+
 require './lib/tagfinder/required_gems'
 
 module Tagfinder
