@@ -16,12 +16,21 @@ RSpec.describe Tagfinder::Shell::TagfinderMac do
 
   it 'builds a tagfinder-mac command given just a data file' do
     expect(described_class.call(data_filepath: data_file, params_filepath: nil))
-      .to eql "bin/tagfinder-mac #{data_file}"
+      .to eql "nice -n 0 bin/tagfinder-mac #{data_file}"
   end
 
   it 'builds a tagfinder-mac command given a data file & a config file' do
     expect(described_class.call(data_filepath: data_file, params_filepath: params_file))
-      .to eql "bin/tagfinder-mac #{data_file} #{params_file}"
+      .to eql "nice -n 0 bin/tagfinder-mac #{data_file} #{params_file}"
+  end
+
+  it 'builds a tagfinder command with given nice priority' do
+    cmd = described_class.call(
+      data_filepath:   data_file,
+      params_filepath: params_file,
+      priority:        -3
+    )
+    expect(cmd).to eql "nice -n -3 bin/tagfinder-mac #{data_file} #{params_file}"
   end
 end
 
@@ -31,12 +40,21 @@ RSpec.describe Tagfinder::Shell::TagfinderUbuntu do
 
   it 'builds a tagfinder command given just a data file' do
     expect(described_class.call(data_filepath: data_file, params_filepath: nil))
-      .to eql "bin/tagfinder #{data_file}"
+      .to eql "sudo nice -n 0 bin/tagfinder #{data_file}"
   end
 
   it 'builds a tagfinder command given a data file & a config file' do
     expect(described_class.call(data_filepath: data_file, params_filepath: params_file))
-      .to eql "bin/tagfinder #{data_file} #{params_file}"
+      .to eql "sudo nice -n 0 bin/tagfinder #{data_file} #{params_file}"
+  end
+
+  it 'builds a tagfinder command with given nice priority' do
+    cmd = described_class.call(
+      data_filepath:   data_file,
+      params_filepath: params_file,
+      priority:        -5
+    )
+    expect(cmd).to eql "sudo nice -n -5 bin/tagfinder #{data_file} #{params_file}"
   end
 end
 

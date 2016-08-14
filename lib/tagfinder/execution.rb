@@ -15,12 +15,12 @@ module Tagfinder
         result[:error] = history.map { |output| output[:stderr] }.join("\n")
       end
 
-      puts "\n#{Time.now} >".gray + "  Finished execution with the following parameters:".green
+      puts "\n#{Time.now} >".gray + '  Finished execution with the following parameters:'.green
       puts '      data_url:   '.black + "#{data_url}".white
       puts '      params_url: '.black + "#{params_url || 'used default params'.gray}".white
       ap result
 
-      puts "\n#{Time.now} >".gray + "  Cleaning up execution with the following parameters:".yellow
+      puts "\n#{Time.now} >".gray + '  Cleaning up execution with the following parameters:'.yellow
       puts '      data_url:   '.black + "#{data_url}".white
       puts '      params_url: '.black + "#{params_url || 'used default params'.gray}".white
       cleanup
@@ -31,7 +31,7 @@ module Tagfinder
     private
 
     def cleanup
-      puts "\n#{Time.now} >".gray + "  Deleting the following files:".blue
+      puts "\n#{Time.now} >".gray + '  Deleting the following files:'.blue
       files_to_remove.each { |f| puts "      - #{f}".white }
 
       File.delete(*files_to_remove)
@@ -47,7 +47,11 @@ module Tagfinder
 
     def history
       cli
-        .tagfinder(data_filepath: data_filepath, params_filepath: params_filepath)
+        .tagfinder(
+          data_filepath:   data_filepath,
+          params_filepath: params_filepath,
+          priority:        priority
+        )
         .history.to_s
     end
     memoize :history
@@ -56,6 +60,10 @@ module Tagfinder
       download(data_url, Downloader::MzxmlFileCreator)
     end
     memoize :data_filepath
+
+    def priority # Lower priority for larger files
+      File.size(data_filepath) > 82_000_000 ? 10 : 0
+    end
 
     def params_filepath
       download(params_url, Downloader::ParamsFileCreator) unless params_url.nil?

@@ -29,7 +29,7 @@ RSpec.describe Tagfinder::CommandLine do
 
     let(:no_files) do
       {
-        command: 'bin/tagfinder-mac',
+        command: 'nice -n 0 bin/tagfinder-mac',
         status:  0,
         stderr:  '',
         stdout:  File.read(Pathname.new('spec').join('fixtures', 'tagfinder-usage.txt'))
@@ -38,18 +38,23 @@ RSpec.describe Tagfinder::CommandLine do
 
     let(:non_mzxml_file) do
       no_files.merge(
-        command: 'bin/tagfinder-mac badfile',
+        command: 'nice -n 0 bin/tagfinder-mac badfile',
         stderr:  "File name did not end in \".mzxml\".\n"
       )
     end
 
     let(:bad_mzxml_file) do
       {
-        command: 'bin/tagfinder-mac badfile.mzxml',
+        command: 'nice -n 0 bin/tagfinder-mac badfile.mzxml',
         status:  1,
         stderr:  "error declared in file [main.cpp] at line 317\nfailed to load mzxml file\n",
         stdout:  File.read(Pathname.new('spec').join('fixtures', 'tagfinder-bad-file.txt'))
       }
+    end
+
+    before do
+      allow($stdout).to receive(:write)
+      allow($stderr).to receive(:write)
     end
 
     it 'provides usage information when not provided any files' do
@@ -57,12 +62,12 @@ RSpec.describe Tagfinder::CommandLine do
       expect(history.to_a.first.to_s).to eql(no_files)
     end
 
-    it 'tells user to provide an .mzxml file' do
+    it 'notifies user to provide an .mzxml file' do
       history = cli.tagfinder(data_filepath: 'badfile', params_filepath: nil).history
       expect(history.to_a.first.to_s).to eql(non_mzxml_file)
     end
 
-    it 'tells ' do
+    it 'notifies user of error in file' do
       history = cli.tagfinder(data_filepath: 'badfile.mzxml', params_filepath: nil).history
       expect(history.to_a.first.to_s).to eql(bad_mzxml_file)
     end

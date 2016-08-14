@@ -20,7 +20,7 @@ RSpec.describe Tagfinder::Execution::S3Uploader do
 
   describe '.call' do
     context 'local file exists' do
-      before { Aws::S3::Object.any_instance.stub(:upload_file) }
+      before { allow_any_instance_of(Aws::S3::Object).to receive(:upload_file) }
 
       it 'uploads the given file' do
         expect_any_instance_of(Aws::S3::Object).to receive(:upload_file)

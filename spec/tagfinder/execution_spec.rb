@@ -3,7 +3,18 @@ RSpec.describe Tagfinder::Execution do
 
   let(:history) do
     [{
-      command: "bin/tagfinder-mac #{CURRENT_DIR}/tmp/data/xxx-blah.mzxml " \
+      command: "nice -n 0 bin/tagfinder-mac #{CURRENT_DIR}/tmp/data/xxx-blah.mzxml " \
+               "#{CURRENT_DIR}/tmp/params/xxx-google.com",
+      status:  1,
+      stderr:  '',
+      stdout:  "TextSection::load_file: error opening file \"#{CURRENT_DIR}" \
+               "/tmp/params/xxx-google.com\"\n"
+    }]
+  end
+
+  let(:large_history) do
+    [{
+      command: "nice -n 10 bin/tagfinder-mac #{CURRENT_DIR}/tmp/data/xxx-blah.mzxml " \
                "#{CURRENT_DIR}/tmp/params/xxx-google.com",
       status:  1,
       stderr:  '',
@@ -24,7 +35,7 @@ RSpec.describe Tagfinder::Execution do
   let(:result) do
     base_domain = 'https://devons-bucket-name.s3.devons-region.amazonaws.com/'
     {
-      history: history,
+      history:      history,
       results_urls: [
         "#{base_domain}results/xxx/xxx-blah_chart.txt",
         "#{base_domain}results/xxx/xxx-blah_filter_log.txt",
@@ -38,6 +49,7 @@ RSpec.describe Tagfinder::Execution do
   let(:cli) { Sinatra::Base.development? ? Tagfinder::MacCLI.new : Tagfinder::UbuntuCLI.new }
 
   before do
+    allow(File).to receive(:size).and_return(300)
     stub_const(
       'ENV',
       ENV.to_hash.merge(
@@ -49,8 +61,8 @@ RSpec.describe Tagfinder::Execution do
     )
 
     # Suppress output to console
-    $stdout.stub(:write)
-    $stderr.stub(:write)
+    allow($stdout).to receive(:write)
+    allow($stderr).to receive(:write)
 
     allow_any_instance_of(Aws::S3::Object).to receive(:upload_file)
     allow(File).to receive(:file?).and_return(true)
@@ -61,6 +73,14 @@ RSpec.describe Tagfinder::Execution do
 
   it 'returns the expected result' do
     expect(Tagfinder::Execution.call(execution_opts)).to eql(history: history, error: '')
+  end
+
+  context 'large file' do
+    before { allow(File).to receive(:size).and_return(82_300_000) }
+
+    it 'returns the expected result' do
+      expect(Tagfinder::Execution.call(execution_opts)).to eql(history: large_history, error: '')
+    end
   end
 
   it 'deletes the results files after uploading to S3' do
