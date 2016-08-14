@@ -4,7 +4,8 @@ RSpec.describe Tagfinder::Execution::ResultsUploader do
   let(:results_uploader) { described_class.new(data_filepath) }
 
   before do
-    Aws::S3::Object.any_instance.stub(:upload_file)
+    allow_any_instance_of(Aws::S3::Object).to receive(:upload_file)
+    allow(File).to receive(:file?).and_return(true)
     allow(SecureRandom).to receive(:uuid).and_return('xxx')
     stub_const(
       'ENV',
@@ -25,6 +26,7 @@ RSpec.describe Tagfinder::Execution::ResultsUploader do
         dir.join('datafile_filter_log2.txt'),
         dir.join('datafile_filtered.mzxml'),
         dir.join('datafile_massspec.csv'),
+        dir.join('datafile_scoring.txt'),
         dir.join('datafile_summary.txt')
       ]
     end
@@ -39,6 +41,7 @@ RSpec.describe Tagfinder::Execution::ResultsUploader do
         "#{base_domain}results/xxx/datafile_filter_log2.txt",
         "#{base_domain}results/xxx/datafile_filtered.mzxml",
         "#{base_domain}results/xxx/datafile_massspec.csv",
+        "#{base_domain}results/xxx/datafile_scoring.txt",
         "#{base_domain}results/xxx/datafile_summary.txt"
       ]
     end
@@ -62,7 +65,7 @@ RSpec.describe Tagfinder::Execution::ResultFile do
 
   describe '#upload' do
     before do
-      Aws::S3::Object.any_instance.stub(:upload_file)
+      allow_any_instance_of(Aws::S3::Object).to receive(:upload_file)
       allow(SecureRandom).to receive(:uuid).and_return('xxx')
       stub_const(
         'ENV',

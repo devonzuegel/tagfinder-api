@@ -42,7 +42,7 @@ module Tagfinder
     end
 
     def successful?
-      history.map { |output| output[:status] }.reduce(&:|) == 0
+      history.map { |output| output[:status] }.reduce(&:|).zero?
     end
 
     def history
@@ -72,11 +72,11 @@ module Tagfinder
     end
 
     def files_to_remove
-        [
-          data_filepath,
-          params_filepath,
-          *results_uploader.filepaths
-        ].select { |fp| !fp.nil? && File.file?(fp) }
+      [
+        data_filepath,
+        params_filepath,
+        *results_uploader.filepaths
+      ].select { |fp| !fp.nil? && File.file?(fp) }
     end
   end
 end
