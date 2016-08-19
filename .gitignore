@@ -2,3 +2,4 @@ tmp/data/*
 tmp/params/*
 .env
 Gemfile.lock
+log/*
