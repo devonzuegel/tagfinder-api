@@ -54,7 +54,7 @@
     ```shell
     screen # Create a new screen session so it remains running after you close your terminal.
     cd tagfinder-api 
-    thin start
+    thin start -p 8000
     ```
 
 - To reattach to the screen sesion after you have closed your terminal:
